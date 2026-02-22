@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -926,14 +927,242 @@
   </div>
 
   <script>
-    // Remove loading state after page load
+    // ===== SUPABASE CONFIG =====
+    // Vul hier je Supabase project URL en anon key in
+    const SUPABASE_URL = 'https://YOUR_PROJECT.supabase.co';
+    const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';
+
+    let sb = null;
+    try {
+      sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } catch (e) {
+      console.warn('Supabase niet beschikbaar, statische content wordt getoond.');
+    }
+
+    // ===== HELPERS =====
+    function sanitize(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    const socialIcons = {
+      instagram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>',
+      tiktok: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V8.73a8.19 8.19 0 004.77 1.52V6.8a4.84 4.84 0 01-1.01-.11z"/></svg>',
+      spotify: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>',
+      youtube: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.13C5.12 19.56 12 19.56 12 19.56s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>',
+      facebook: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>'
+    };
+
+    // ===== DATA LOADERS =====
+    async function loadSiteContent() {
+      if (!sb) return;
+      try {
+        // Tagline
+        const { data: tagline } = await sb
+          .from('site_content').select('body').eq('section_key', 'tagline').single();
+        if (tagline) {
+          document.querySelector('.artist-name .tagline').textContent = tagline.body;
+        }
+
+        // About
+        const { data: about } = await sb
+          .from('site_content').select('*').eq('section_key', 'about').single();
+        if (about) {
+          const paragraphs = about.body.split('\n\n')
+            .map(p => '<p class="panel-text">' + sanitize(p) + '</p>').join('');
+          const tags = (about.tags || [])
+            .map(t => '<span class="tag">' + sanitize(t) + '</span>').join('');
+          const panel = document.querySelector('#panel-about .panel-content');
+          panel.innerHTML =
+            '<h2 class="panel-title">Over mij</h2>' +
+            '<div class="panel-divider"></div>' +
+            paragraphs +
+            '<div class="tag-list">' + tags + '</div>';
+        }
+      } catch (e) {
+        console.warn('Kon site content niet laden:', e);
+      }
+    }
+
+    async function loadMuziek() {
+      if (!sb) return;
+      try {
+        const { data: muziek } = await sb
+          .from('muziek').select('*')
+          .order('sort_order', { ascending: true })
+          .order('jaar', { ascending: false });
+        if (!muziek || muziek.length === 0) return;
+
+        const items = muziek.map(m => {
+          const typeLabel = m.type === 'album' ? 'Album' : m.type === 'ep' ? 'EP' : 'Single';
+          const trackInfo = m.aantal_tracks ? ' &middot; ' + m.aantal_tracks + ' tracks' : '';
+          const links = [];
+          if (m.spotify_url) links.push('<a href="' + m.spotify_url + '" target="_blank">Spotify</a>');
+          if (m.apple_music_url) links.push('<a href="' + m.apple_music_url + '" target="_blank">Apple Music</a>');
+          if (m.soundcloud_url) links.push('<a href="' + m.soundcloud_url + '" target="_blank">SoundCloud</a>');
+
+          return '<div class="music-item">' +
+            '<div class="music-thumb" style="background:linear-gradient(135deg,' + m.gradient_from + ',' + m.gradient_to + ')">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>' +
+            '</div>' +
+            '<div class="music-meta">' +
+            '<h4>' + sanitize(m.titel) + '</h4>' +
+            '<p>' + typeLabel + ' &middot; ' + m.jaar + trackInfo + '</p>' +
+            '<div class="links">' + links.join('') + '</div>' +
+            '</div></div>';
+        }).join('');
+
+        const panel = document.querySelector('#panel-music .panel-content');
+        panel.innerHTML =
+          '<h2 class="panel-title">Muziek</h2>' +
+          '<div class="panel-divider"></div>' +
+          items +
+          '<div class="platform-links">' +
+          '<a href="#" class="platform-link">' + socialIcons.spotify + ' Spotify</a>' +
+          '<a href="#" class="platform-link">' + socialIcons.youtube + ' YouTube</a>' +
+          '</div>';
+      } catch (e) {
+        console.warn('Kon muziek niet laden:', e);
+      }
+    }
+
+    async function loadConcerten() {
+      if (!sb) return;
+      try {
+        const { data: concerten } = await sb
+          .from('concerten').select('*')
+          .order('datum', { ascending: true });
+        if (!concerten || concerten.length === 0) return;
+
+        const today = new Date().toISOString().split('T')[0];
+        const months = ['Jan','Feb','Mrt','Apr','Mei','Jun','Jul','Aug','Sep','Okt','Nov','Dec'];
+
+        const items = concerten.map(c => {
+          const d = new Date(c.datum + 'T00:00:00');
+          const day = String(d.getDate()).padStart(2, '0');
+          const month = months[d.getMonth()];
+          const isPast = c.datum < today;
+          const pastClass = isPast ? ' concert-past' : '';
+
+          let ticketHtml = '';
+          if (isPast || c.status === 'uitverkocht') {
+            ticketHtml = '<span class="concert-ticket" style="pointer-events:none;opacity:0.5;">Uitverkocht</span>';
+          } else if (c.status === 'binnenkort') {
+            ticketHtml = '<span class="concert-ticket" style="pointer-events:none;">Binnenkort</span>';
+          } else if (c.ticket_url) {
+            ticketHtml = '<a href="' + c.ticket_url + '" class="concert-ticket" target="_blank">Tickets</a>';
+          } else {
+            ticketHtml = '<a href="#" class="concert-ticket">Tickets</a>';
+          }
+
+          const timeStr = c.tijd ? ' &middot; ' + c.tijd.slice(0, 5) : '';
+
+          return '<div class="concert-item' + pastClass + '">' +
+            '<div class="concert-date"><div class="day">' + day + '</div><div class="month">' + month + '</div></div>' +
+            '<div class="concert-info"><h4>' + sanitize(c.venue) + '</h4><p>' + sanitize(c.stad) + timeStr + '</p></div>' +
+            ticketHtml + '</div>';
+        }).join('');
+
+        const panel = document.querySelector('#panel-concerts .panel-content');
+        panel.innerHTML =
+          '<h2 class="panel-title">Concerten</h2>' +
+          '<div class="panel-divider"></div>' +
+          '<p class="panel-text">Kom me live zien op een van de aankomende shows.</p>' +
+          items;
+      } catch (e) {
+        console.warn('Kon concerten niet laden:', e);
+      }
+    }
+
+    async function loadSocialLinks() {
+      if (!sb) return;
+      try {
+        const { data: links } = await sb
+          .from('social_links').select('*')
+          .order('sort_order', { ascending: true });
+        if (!links || links.length === 0) return;
+
+        // Social panel
+        const socialGrid = document.querySelector('#panel-social .social-grid');
+        if (socialGrid) {
+          socialGrid.innerHTML = links.map(l =>
+            '<a href="' + l.url + '" class="social-item" target="_blank" rel="noopener">' +
+            (socialIcons[l.platform] || '') +
+            '<span>' + capitalize(l.platform) + '</span></a>'
+          ).join('');
+        }
+
+        // Bottom bar
+        const bottomSocial = document.querySelector('.bottom-social');
+        if (bottomSocial) {
+          bottomSocial.innerHTML = links.map(l =>
+            '<a href="' + l.url + '" aria-label="' + capitalize(l.platform) + '" target="_blank" rel="noopener">' +
+            (socialIcons[l.platform] || '') + '</a>'
+          ).join('');
+        }
+      } catch (e) {
+        console.warn('Kon social links niet laden:', e);
+      }
+    }
+
+    async function loadContactInfo() {
+      if (!sb) return;
+      try {
+        const { data: contacts } = await sb
+          .from('contact_info').select('*')
+          .order('sort_order', { ascending: true });
+        if (!contacts || contacts.length === 0) return;
+
+        const contactDetails = document.querySelector('#panel-contact .panel-content');
+        if (!contactDetails) return;
+
+        const detailsHtml = contacts.map(c => {
+          const iconSvg = c.type === 'booking'
+            ? '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>'
+            : '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
+          return '<div class="contact-detail">' +
+            '<div class="icon">' + iconSvg + '</div>' +
+            '<a href="' + (c.url || '#') + '">' + sanitize(c.label) + '</a></div>';
+        }).join('');
+
+        contactDetails.innerHTML =
+          '<h2 class="panel-title">Contact</h2>' +
+          '<div class="panel-divider"></div>' +
+          detailsHtml +
+          '<div class="panel-divider" style="margin-top:1.5rem;"></div>' +
+          '<p class="panel-text" style="margin-bottom:0.5rem;">Stuur een bericht</p>' +
+          '<form class="contact-form" onsubmit="event.preventDefault();">' +
+          '<input type="text" placeholder="Naam">' +
+          '<input type="email" placeholder="E-mail">' +
+          '<input type="text" placeholder="Onderwerp">' +
+          '<textarea placeholder="Je bericht..."></textarea>' +
+          '<button type="submit">Versturen</button></form>';
+      } catch (e) {
+        console.warn('Kon contact info niet laden:', e);
+      }
+    }
+
+    // ===== INIT =====
     window.addEventListener('load', () => {
+      // Intro animatie
       setTimeout(() => {
         document.getElementById('site').classList.remove('loading');
       }, 300);
+
+      // Laad dynamische content uit Supabase
+      loadSiteContent();
+      loadMuziek();
+      loadConcerten();
+      loadSocialLinks();
+      loadContactInfo();
     });
 
-    // Panel management
+    // ===== PANEL MANAGEMENT =====
     let activePanel = null;
 
     function openPanel(name) {

@@ -2,6 +2,12 @@
 -- Urita CMS - Database Schema
 -- Email-to-Website CMS via n8n + Supabase
 -- =============================================
+--
+-- n8n Workflow notities:
+-- - Toegestane afzender (whitelist): victor@veen.co
+-- - Later toevoegen: Urita's eigen emailadres
+-- - n8n gebruikt service_role key voor schrijftoegang
+-- =============================================
 
 -- Tekst-secties (bio, tagline, etc.)
 CREATE TABLE public.site_content (

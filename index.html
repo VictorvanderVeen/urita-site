@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Urita | Muzikant</title>
+  <title>Urita | Singer-Songwriter</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -61,16 +61,12 @@
       pointer-events: none;
     }
 
-    .artist-name h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(4rem, 12vw, 10rem);
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      color: rgba(255, 255, 255, 0.92);
-      text-shadow:
-        0 0 60px rgba(0,0,0,0.5),
-        0 0 120px rgba(0,0,0,0.3);
-      line-height: 1;
+    .artist-logo {
+      width: clamp(200px, 40vw, 500px);
+      height: auto;
+      filter: invert(1);
+      mix-blend-mode: screen;
+      drop-shadow: 0 0 60px rgba(0,0,0,0.5);
     }
 
     .artist-name .tagline {
@@ -619,8 +615,8 @@
       .hotspot-contact { top: 28%; right: 3%; }
       .hotspot-social { bottom: 20%; left: 12%; }
 
-      .artist-name h1 {
-        font-size: clamp(3rem, 15vw, 5rem);
+      .artist-logo {
+        width: clamp(160px, 50vw, 300px);
       }
 
       .panel-content {
@@ -661,10 +657,10 @@
     <img src="foto.jpg" alt="" class="bg-photo">
     <div class="bg-overlay"></div>
 
-    <!-- Naam centraal over de foto -->
+    <!-- Logo centraal over de foto -->
     <div class="artist-name">
-      <h1>Urita</h1>
-      <p class="tagline">muzikant</p>
+      <img src="logo.jpg" alt="Urita" class="artist-logo">
+      <p class="tagline">singer-songwriter</p>
     </div>
 
     <!-- Bloem-hotspots geplaatst op bloemengroepen in de foto -->
@@ -728,24 +724,31 @@
     <div class="panel-content">
       <h2 class="panel-title">Over mij</h2>
       <div class="panel-divider"></div>
-      <p class="panel-text">
-        Mijn muziek groeit zoals bloemen in een tuin - organisch, kleurrijk en altijd in beweging.
-        Van jongs af aan ben ik gefascineerd door de verbinding tussen klanken en de natuur om ons heen.
+      <p class="panel-text" style="font-style: italic; color: rgba(217, 79, 138, 0.9); margin-bottom: 1.5rem;">
+        &ldquo;What a presence this woman has &mdash; and a voice of gold.&rdquo; &mdash; 3voor12
       </p>
       <p class="panel-text">
-        Als zangeres en songwriter weef ik verhalen over liefde, groei en het vinden van
-        schoonheid in het onverwachte. Mijn sound is een mix van indie-folk, dromerige pop
-        en akoestische warmte.
+        Urita Mual is a Dutch singer-songwriter whose work bridges soul, pop, and rich melodic storytelling.
+        Recognized early on as NPO Radio 2 Talent (2014) following the release of her single &ldquo;Shine On You,&rdquo;
+        she quickly established herself as an artist with both emotional depth and commercial appeal.
       </p>
       <p class="panel-text">
-        Wanneer ik niet in de studio ben, vind je me tussen de planten in botanische tuinen
-        of schrijvend in een klein caf&eacute; ergens in de stad.
+        Her debut EP Building The Dream, recorded at the legendary Wisseloord Studios, introduced a distinctive
+        sound combining ethereal vocals with contemporary pop and subtle New Orleans brass influences.
+      </p>
+      <p class="panel-text">
+        Urita&rsquo;s collaborative work highlights her versatility: she recorded vocals for &ldquo;Blackberry Street&rdquo;
+        on Benny Sings&rsquo; album Benny&hellip; at Home, and co-created music with Perquisite for the film
+        Carmen van het Noorden, a project that received a Gouden Kalf award.
+      </p>
+      <p class="panel-text">
+        Currently, Urita continues to write and produce new music, working on her second EP while evolving her distinctive sound.
       </p>
       <div class="tag-list">
-        <span class="tag">Zang</span>
+        <span class="tag">Soul</span>
+        <span class="tag">Pop</span>
         <span class="tag">Songwriter</span>
-        <span class="tag">Indie-Folk</span>
-        <span class="tag">Akoestisch</span>
+        <span class="tag">Vocalist</span>
       </div>
     </div>
   </div>
@@ -764,22 +767,8 @@
           <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         </div>
         <div class="music-meta">
-          <h4>Bloeiend Seizoen</h4>
-          <p>Album &middot; 2025 &middot; 10 tracks</p>
-          <div class="links">
-            <a href="#">Spotify</a>
-            <a href="#">Apple Music</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="music-item">
-        <div class="music-thumb" style="background: linear-gradient(135deg, rgba(155,77,202,0.5), rgba(217,79,138,0.4));">
-          <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        </div>
-        <div class="music-meta">
-          <h4>Nachtbloemen</h4>
-          <p>EP &middot; 2024 &middot; 5 tracks</p>
+          <h4>Building The Dream</h4>
+          <p>EP &middot; Wisseloord Studios</p>
           <div class="links">
             <a href="#">Spotify</a>
             <a href="#">Apple Music</a>
@@ -792,12 +781,35 @@
           <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         </div>
         <div class="music-meta">
-          <h4>Eerste Licht</h4>
-          <p>Single &middot; 2024</p>
+          <h4>Shine On You</h4>
+          <p>Single &middot; 2014</p>
           <div class="links">
             <a href="#">Spotify</a>
             <a href="#">Apple Music</a>
           </div>
+        </div>
+      </div>
+
+      <div class="panel-divider" style="margin-top: 1.5rem;"></div>
+      <p class="panel-text" style="color: rgba(245,240,235,0.5); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em;">Samenwerkingen</p>
+
+      <div class="music-item">
+        <div class="music-thumb" style="background: linear-gradient(135deg, rgba(155,77,202,0.5), rgba(217,79,138,0.4));">
+          <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <div class="music-meta">
+          <h4>Blackberry Street</h4>
+          <p>met Benny Sings &middot; Benny&hellip; at Home</p>
+        </div>
+      </div>
+
+      <div class="music-item">
+        <div class="music-thumb" style="background: linear-gradient(135deg, rgba(100,140,180,0.5), rgba(155,77,202,0.4));">
+          <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <div class="music-meta">
+          <h4>Carmen van het Noorden</h4>
+          <p>met Perquisite &middot; Gouden Kalf</p>
         </div>
       </div>
 
@@ -809,10 +821,6 @@
         <a href="#" class="platform-link">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 3.5c.59 0 7.54.02 9.34.5a3.02 3.02 0 012.12 2.15C24 8.05 24 12 24 12v.04c0 .43-.03 4-.5 5.8a3.02 3.02 0 01-2.12 2.15c-1.8.49-8.75.51-9.34.51-.59 0-7.54-.02-9.34-.5a3.02 3.02 0 01-2.12-2.15C0 15.95 0 12 0 12s0-3.95.5-5.8A3.02 3.02 0 012.62 4c1.8-.49 8.75-.51 9.34-.51l.08.01zM9.54 8.4v7.18L15.82 12 9.54 8.4z"/></svg>
           YouTube
-        </a>
-        <a href="#" class="platform-link">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.977 23.942c-2.34 0-4.238-.338-5.573-.789-.89-.3-1.562-.636-1.922-.89a.75.75 0 01.828-1.25c.025.017.312.196.82.403 1.152.47 2.918.776 5.052.776 1.994 0 3.707-.297 4.86-.724a5.35 5.35 0 00.753-.368.75.75 0 01.802 1.268c-.396.25-.866.454-1.003.51-1.312.527-3.2.864-5.617.864z"/></svg>
-          SoundCloud
         </a>
       </div>
     </div>
@@ -828,34 +836,16 @@
       <div class="panel-divider"></div>
       <p class="panel-text">Kom me live zien op een van de aankomende shows.</p>
 
-      <div class="concert-item">
-        <div class="concert-date"><div class="day">14</div><div class="month">Mrt</div></div>
-        <div class="concert-info"><h4>Paradiso - Kleine Zaal</h4><p>Amsterdam &middot; 20:30</p></div>
-        <a href="#" class="concert-ticket">Tickets</a>
-      </div>
-
-      <div class="concert-item">
-        <div class="concert-date"><div class="day">28</div><div class="month">Mrt</div></div>
-        <div class="concert-info"><h4>TivoliVredenburg</h4><p>Utrecht &middot; 20:00</p></div>
-        <a href="#" class="concert-ticket">Tickets</a>
-      </div>
-
-      <div class="concert-item">
-        <div class="concert-date"><div class="day">11</div><div class="month">Apr</div></div>
-        <div class="concert-info"><h4>Rotown</h4><p>Rotterdam &middot; 21:00</p></div>
-        <a href="#" class="concert-ticket">Tickets</a>
-      </div>
-
-      <div class="concert-item">
-        <div class="concert-date"><div class="day">02</div><div class="month">Mei</div></div>
-        <div class="concert-info"><h4>Botanique</h4><p>Brussel &middot; 20:00</p></div>
-        <a href="#" class="concert-ticket">Binnenkort</a>
-      </div>
-
       <div class="concert-item concert-past">
-        <div class="concert-date"><div class="day">12</div><div class="month">Jan</div></div>
-        <div class="concert-info"><h4>Bitterzoet</h4><p>Amsterdam &middot; Uitverkocht</p></div>
-        <span class="concert-ticket" style="pointer-events:none; opacity:0.5;">Uitverkocht</span>
+        <div class="concert-date"><div class="day">21</div><div class="month">Mrt</div></div>
+        <div class="concert-info"><h4>Private Concert</h4><p>2026</p></div>
+        <span class="concert-ticket" style="pointer-events:none; opacity:0.5;">Afgelopen</span>
+      </div>
+
+      <div class="concert-item">
+        <div class="concert-date"><div class="day">04</div><div class="month">Jul</div></div>
+        <div class="concert-info"><h4>Pappel Pop</h4><p>2026</p></div>
+        <span class="concert-ticket">Binnenkort</span>
       </div>
     </div>
   </div>
@@ -871,11 +861,11 @@
 
       <div class="contact-detail">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-        <a href="mailto:hallo@urita.nl">hallo@urita.nl</a>
+        <a href="mailto:uritamusic@gmail.com">uritamusic@gmail.com</a>
       </div>
       <div class="contact-detail">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>
-        <a href="mailto:booking@urita.nl">booking@urita.nl</a>
+        <span style="color: rgba(245, 240, 235, 0.7); font-size: 0.9rem;">Bookings: Marble Agency</span>
       </div>
 
       <div class="panel-divider" style="margin-top: 1.5rem;"></div>

@@ -867,11 +867,11 @@
       <div class="panel-divider" style="margin-top: 1.5rem;"></div>
       <p class="panel-text" style="margin-bottom: 0.5rem;">Stuur een bericht</p>
 
-      <form class="contact-form" onsubmit="event.preventDefault();">
-        <input type="text" placeholder="Naam">
-        <input type="email" placeholder="E-mail">
-        <input type="text" placeholder="Onderwerp">
-        <textarea placeholder="Je bericht..."></textarea>
+      <form class="contact-form" action="https://formspree.io/f/xvzvkqjr" method="POST">
+        <input type="text" name="naam" placeholder="Naam" required>
+        <input type="email" name="email" placeholder="E-mail" required>
+        <input type="text" name="onderwerp" placeholder="Onderwerp">
+        <textarea name="bericht" placeholder="Je bericht..." required></textarea>
         <button type="submit">Versturen</button>
       </form>
     </div>
